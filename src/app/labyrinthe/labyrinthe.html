@@ -1,0 +1,55 @@
+<div class="maze-wrapper" [ngClass]="difficulty">
+    <h1 class="maze-title">Labyrinthe néon</h1>
+    <p class="maze-subtitle">
+        Atteins la sortie en évitant les murs.<br />
+        Utilise les flèches du clavier ou les boutons.
+    </p>
+
+    <!-- Choix de difficulté -->
+    <div class="difficulty">
+        <button class="diff-btn" [class.active]="difficulty === 'easy'" (click)="applyDifficulty('easy')">
+            Facile
+        </button>
+        <button class="diff-btn" [class.active]="difficulty === 'medium'" (click)="applyDifficulty('medium')">
+            Moyen
+        </button>
+        <button class="diff-btn" [class.active]="difficulty === 'hard'" (click)="applyDifficulty('hard')">
+            Difficile
+        </button>
+    </div>
+
+    <div class="maze-info">
+        <div class="stat">Déplacements : <span>{{ moves }}</span></div>
+        <button class="btn" (click)="reset()">🔁 Reset</button>
+    </div>
+
+    <p *ngIf="!win" class="maze-hint">
+        🟡 Tu es le pion jaune, la sortie est en rose.
+    </p>
+    <p *ngIf="win" class="maze-win">
+        🎉 Bravo ! Tu as trouvé la sortie en {{ moves }} déplacements.
+    </p>
+
+    <div class="maze-grid">
+        <div class="maze-row" *ngFor="let row of maze; let r = index">
+            <div class="maze-cell" *ngFor="let cell of row; let c = index" [ngClass]="{
+             wall: cell === '#',
+             start: cell === 'S',
+             exit: cell === 'E',
+             player: isPlayer(r, c)
+           }">
+                <span *ngIf="isPlayer(r, c)">🟡</span>
+                <span *ngIf="!isPlayer(r, c) && cell === 'E'">🚪</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="ctrl-btn" (click)="move(-1, 0)">⬆</button>
+        <div class="controls-middle">
+            <button class="ctrl-btn" (click)="move(0, -1)">⬅</button>
+            <button class="ctrl-btn" (click)="move(0, 1)">➡</button>
+        </div>
+        <button class="ctrl-btn" (click)="move(1, 0)">⬇</button>
+    </div>
+</div>

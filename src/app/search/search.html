@@ -1,0 +1,22 @@
+<div class="page-container">
+
+    <h1>Blagues Chuck Norris</h1>
+
+    <label>Choisir une catégorie :</label>
+    <select [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event)">
+        <option value="">-- Sélectionner une catégorie --</option>
+        <option *ngFor="let cat of categories()" [value]="cat">
+            {{ cat }}
+        </option>
+    </select>
+
+    <button (click)="showJoke()" [disabled]="!selectedCategory()">
+        Afficher une blague
+    </button>
+
+    <div *ngIf="joke()" class="joke-box">
+        {{ joke() }}
+    </div>
+
+
+</div>

@@ -1,0 +1,37 @@
+<div class="wrapper">
+    <div class="topbar">
+        <h2 class="title">Memory</h2>
+
+        <div class="scores">
+            <div class="player" [class.active]="currentPlayer === 1">
+                <span class="badge">1</span>
+                <input [(ngModel)]="players[1]" class="pseudo" placeholder="Player 1" maxlength="14" />
+                <span class="score">{{ scores[1] }}</span>
+            </div>
+
+            <div class="player" [class.active]="currentPlayer === 2">
+                <span class="badge">2</span>
+                <input [(ngModel)]="players[2]" class="pseudo" placeholder="Player 2" maxlength="14" />
+                <span class="score">{{ scores[2] }}</span>
+            </div>
+
+            <div class="actions">
+                <button class="btn" (click)="reset()">🔁 Reset</button>
+            </div>
+        </div>
+
+    </div>
+
+    <p *ngIf="!win" class="turn">Up to : {{ players[currentPlayer] }}</p>
+    <p *ngIf="win" class="win">{{ winnerText }}</p>
+
+    <div class="grid">
+        <button class="card" *ngFor="let c of cards; let i = index" (click)="flip(i)" [class.found]="c.find"
+            [class.flipped]="c.flip || c.find">
+            <div class="card-inner">
+                <div class="card-face card-front">?</div>
+                <div class="card-face card-back">{{ c.name }}</div>
+            </div>
+        </button>
+    </div>
+</div>

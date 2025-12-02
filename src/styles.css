@@ -1,1 +1,76 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================== */
+/*  IMPORT FONT – Press Start 2P  */
+/* ============================== */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ============================== */
+/*         GLOBAL ARCADE          */
+/* ============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* 🎮 Fond global arcade */
+body {
+    background: #0a0a0f;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 0, 200, 0.15), transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(0, 150, 255, 0.15), transparent 60%),
+        repeating-linear-gradient(0deg,
+            rgba(255, 255, 255, 0.03) 0px,
+            rgba(255, 255, 255, 0.03) 2px,
+            transparent 4px,
+            transparent 6px);
+    color: #e5e5e5;
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+    letter-spacing: 1px;
+
+    /* IMPORTANT pour que ::before / ::after puissent passer derrière */
+    position: relative;
+    z-index: 0;
+}
+
+/* 🌈 Effet CRT global */
+body::after {
+    content: '';
+    pointer-events: none;
+    /* on laisse les clics passer */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg,
+            rgba(255, 255, 255, 0.04) 0px,
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 2px);
+    opacity: 0.25;
+    z-index: -1;
+    /* 🔥 fond CRT derrière tout, ne bloque plus les liens */
+}
+
+/* 👾 Émojis arcade géants en background */
+body::before {
+    content: '👾 🕹️ 🎮 💾';
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7rem;
+    opacity: 0.035;
+    pointer-events: none;
+    filter: blur(1px);
+    z-index: -2;
+    /* encore plus derrière */
+}
