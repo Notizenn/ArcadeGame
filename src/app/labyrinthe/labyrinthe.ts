@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { NgFor, NgClass, CommonModule } from '@angular/common';
+import { StatsService } from '../stats/stats.service';
 
 type Cell = '#' | ' ' | 'S' | 'E';
 
@@ -25,22 +26,24 @@ export class LabyrintheComponent implements OnInit {
   win = false;
   moves = 0;
 
-  // difficulté / taille
+
+  private startTimeMs: number | null = null;
+
+
   difficulty: 'easy' | 'medium' | 'hard' = 'easy';
-  size = 9; // 9, 15, 21 ...
+  size = 9;
+
+  constructor(private statsService: StatsService) { }
 
   ngOnInit(): void {
     this.applyDifficulty('easy');
   }
 
-  // ==========================
-  //  GESTION CLAVIER
-  // ==========================
+
 
   @HostListener('window:keydown', ['$event'])
   handleKey(event: KeyboardEvent) {
     if (this.win) return;
-
 
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(event.key)) {
       event.preventDefault();
@@ -48,32 +51,23 @@ export class LabyrintheComponent implements OnInit {
 
     switch (event.key) {
       case 'ArrowUp':
-        this.move(-1, 0);
-        break;
-      case 'ArrowDown':
-        this.move(1, 0);
-        break;
-      case 'ArrowLeft':
-        this.move(0, -1);
-        break
-      case 'ArrowRight':
-        this.move(0, 1);
-        break
       case 'w':
         this.move(-1, 0);
         break;
+      case 'ArrowDown':
       case 's':
         this.move(1, 0);
         break;
+      case 'ArrowLeft':
       case 'a':
         this.move(0, -1);
         break;
+      case 'ArrowRight':
       case 'd':
         this.move(0, 1);
         break;
     }
   }
-
 
   move(dr: number, dc: number) {
     if (!this.maze.length || this.win) return;
@@ -97,12 +91,11 @@ export class LabyrintheComponent implements OnInit {
 
     if (nr === this.exitRow && nc === this.exitCol) {
       this.win = true;
+      this.onWin();
     }
   }
 
-  // ==========================
-  //   DIFFICULTÉ / RESET
-  // ==========================
+
 
   applyDifficulty(diff: 'easy' | 'medium' | 'hard') {
     this.difficulty = diff;
@@ -113,7 +106,6 @@ export class LabyrintheComponent implements OnInit {
   }
 
   reset() {
-    // reset avec nouvelle génération (labyrinthe différent)
     this.generateMaze(this.size);
     this.resetPlayer();
   }
@@ -123,14 +115,27 @@ export class LabyrintheComponent implements OnInit {
     this.playerCol = this.startCol;
     this.moves = 0;
     this.win = false;
+    this.startTimeMs = performance.now();
   }
 
-  // ==========================
-  //    GÉNÉRATION DE MAZE
-  // ==========================
+
+  private onWin() {
+    const now = performance.now();
+    const elapsedMs = this.startTimeMs ? now - this.startTimeMs : 0;
+
+    this.statsService.updateGameStats('labyrinthe', {
+      timeMs: Math.round(elapsedMs),
+      moves: this.moves,
+      difficulty: this.difficulty,
+      size: this.size,
+    });
+  }
+
+
+
 
   private generateMaze(size: number) {
-    // taille impaire >= 5
+
     if (size < 5) size = 5;
     if (size % 2 === 0) size += 1;
 
@@ -146,7 +151,7 @@ export class LabyrintheComponent implements OnInit {
         [0, -2],
         [0, 2],
       ];
-      // shuffle
+
       for (let i = dirs.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [dirs[i], dirs[j]] = [dirs[j], dirs[i]];
@@ -160,17 +165,16 @@ export class LabyrintheComponent implements OnInit {
           nc > 0 && nc < size - 1 &&
           maze[nr][nc] === '#'
         ) {
-          // casse le mur au milieu
+
           maze[r + dr / 2][c + dc / 2] = ' ';
           carve(nr, nc);
         }
       }
     };
 
-    // on part du coin haut gauche intérieur
+
     carve(1, 1);
 
-    // départ + sortie
     maze[1][1] = 'S';
     maze[size - 2][size - 2] = 'E';
 

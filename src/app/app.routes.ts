@@ -6,6 +6,7 @@ import { MemoryComponent } from './memory/memory';
 import { AuthGuard } from './auth-guard';
 import { LoginComponent } from './login/login';
 import { LabyrintheComponent } from './labyrinthe/labyrinthe';
+import { StatsComponent } from './stats/stats';
 
 
 
@@ -17,5 +18,6 @@ export const routes: Routes = [
     { path: 'recherche', component: SearchBlaguesComponent, canActivate: [AuthGuard], },
     { path: 'memory', component: MemoryComponent, canActivate: [AuthGuard], },
     { path: 'labyrinthe', component: LabyrintheComponent, canActivate: [AuthGuard] },
+    { path: 'stats', component: StatsComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: '' },
 ];

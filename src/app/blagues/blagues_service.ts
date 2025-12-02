@@ -10,9 +10,8 @@ export class BlagueService {
 
     constructor(private http: HttpClient) { }
 
-    /** Charge la liste des catégories et les place dans le store */
     loadCategories(): void {
-        // on passe en état "loading"
+
         blagueStore.update((state) => ({
             ...state,
             loading: true,
@@ -37,7 +36,7 @@ export class BlagueService {
         });
     }
 
-    /** Récupère une blague aléatoire pour une catégorie donnée et la stocke */
+
     loadRandomByCategory(category: string): void {
         if (!category) return;
 
