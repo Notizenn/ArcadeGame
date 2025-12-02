@@ -37,6 +37,7 @@ export class StatsService {
         statsStore.update((state) => {
             const gameStats = { ...state[game] };
 
+
             gameStats.gamesPlayed = (gameStats.gamesPlayed ?? 0) + 1;
 
 
@@ -63,6 +64,7 @@ export class StatsService {
             if (options.size != null) {
                 gameStats.lastSize = options.size;
             }
+
 
             gameStats.lastPlayed = new Date().toISOString();
 

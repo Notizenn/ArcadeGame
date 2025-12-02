@@ -8,15 +8,16 @@ function hasLocalStorage(): boolean {
     return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 }
 
-
 export const defaultStatsState: ArcadeStats = {
     labyrinthe: {
         gamesPlayed: 0,
         totalMoves: 0,
         lastDifficulty: 'easy',
         lastSize: 9,
+
     },
 };
+
 
 function getInitialState(): ArcadeStats {
     if (!hasLocalStorage()) {

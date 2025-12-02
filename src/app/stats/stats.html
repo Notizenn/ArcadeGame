@@ -4,8 +4,10 @@
 
     <div class="stats-grid">
 
+
         <div class="stat-card">
             <h2>Labyrinthe Néon</h2>
+
 
             <p>
                 Parties jouées :
@@ -43,13 +45,13 @@
                 </p>
             </ng-container>
 
-
             <ng-container *ngIf="s.labyrinthe.bestTimeMs as bestTime">
                 <p>
                     Meilleur temps :
                     {{ (bestTime / 1000) | number:'1.0-1' }} s
                 </p>
             </ng-container>
+
 
             <ng-container *ngIf="s.labyrinthe.lastPlayed as lastPlayed">
                 <p>
